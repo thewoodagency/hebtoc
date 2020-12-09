@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 error_reporting(~0);
 
 require ('./includes/config.inc.php');
+require ('./includes/config.php');
 require ('./includes/functions.php');
 session_start();
 if(isset($_SESSION['email']))
@@ -10,16 +11,30 @@ if(isset($_SESSION['email']))
 if(isset($_SESSION['admin']))
   unset($_SESSION['admin']);
 $message='';
+$className='';
 
-if(isset($_POST['formID'])) {
-	$email = validate_input2($_POST['email']);
-	
-	if (hasAccount($email)) { 
-			sendPassword($email);
-			$message = "You password has been sent to " . $email . ".<br>Please check your email account and <a href='login_proc.php'>log in</a>.";
-		} else {
-			$message = "No account is found under " . $email . ".<br>Please use the email address which you used for registration or <a href='register.php'>register here</a> to create your account";
-		}
+if(isset($_GET['token'])) {
+	$token = validate_input2($_GET['token']);
+	if (isset($_POST['npwd'])) {
+	    $npwd = $_POST['npwd'];
+        $hash=password_hash($npwd, PASSWORD_DEFAULT);
+        $connection = getConnection();
+        $query = $connection->prepare('update toc_register set password=:new where password=:old');
+        $query->bindParam('new', $hash, PDO::PARAM_STR);
+        $query->bindParam('old', $token, PDO::PARAM_STR);
+        $query->execute();
+
+        if ($query->rowCount() > 0) {
+            $message = "The password has been updated.";
+            $className = "display:none";
+        } else {
+            $message = "Invalid Request. Please request a reset link again";
+            $className = "display:none";
+        }
+    }
+} else {
+    $message = "Invalid Request. Please request a reset link again";
+    $className = "display:none";
 }
 
 ?>
@@ -86,15 +101,15 @@ if(isset($_POST['formID'])) {
 <form class="jotform-form" action="" method="post" name="form_32814544278863" id="32814544278863" accept-charset="utf-8">
   <input type="hidden" name="formID" value="32814544278863" />
   <div class="form-all"><div id="logo"><a href="/"><img src="images/tocweblogo.gif" width="332" height="197" border="0"></a></div>
-  <h3 style="margin-left:30px">Login Password Recovery</h3>
-    <ul class="form-section">
+  <h3 style="margin-left:30px">Password Reset</h3>
+    <ul class="form-section" style="<? echo $className ?>">
      
       <li class="form-line" id="id_1">
         <label class="form-label-left" id="label_1" for="input_1">
-          Email Address<span class="form-required">*</span>
+          New Password<span class="form-required">*</span>
         </label>
         <div id="cid_1" class="form-input">
-          <input type="text" class=" form-textbox validate[required, Email]" data-type="input-textbox" id="email" name="email" size="55" value="" />
+          <input type="text" class=" form-textbox validate[required]" data-type="input-textbox" id="npwd" name="npwd" size="55" value="" />
         </div>
       </li>
      

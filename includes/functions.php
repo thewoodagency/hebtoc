@@ -10,6 +10,11 @@ define("THIRD", "June 3");
 define("FOURTH", "June 4");
 define("FIFTH", "June 5");
 //define("SIXTH", "6/10");
+
+define('USER', '976970_tocuser');
+define('PASSWORD', 'tWa198920');
+define('HOST', 'mysql51-039.wc1.ord1.stabletransit.com');
+define('DATABASE', '976970_toc');
 # ###################################################################
 
 function getTocLevel($sp)
@@ -103,24 +108,17 @@ function getRegid($email)
 
 function hasAccount($email)
 {
-    $dbc = new mysqli("mysql51-039.wc1.ord1.stabletransit.com", "976970_tocuser", "tWa198920", "976970_toc");
     $account = false;
-    //if ($dbc->connect_errno()) {
-    // 	printf("Connect failed: %s\n", $dbc->connect_error());
-    // 	exit();
-    //}
+    $connection = getConnection();
+    $query = $connection->prepare('select * from toc_register where email=:email');
+    $query->bindParam('email', $email, PDO::PARAM_STR);
+    $query->execute();
 
-    $qString = sprintf('select * from toc_register where email="%s"', $dbc->real_escape_string($email));
+    $result = $query->fetch(PDO::FETCH_ASSOC);
 
-    if ($r = $dbc->query($qString)) {
-        $row_cnt = $r->num_rows;
-        if ($row_cnt > 0) {
-            $account = true;
-        }
-        $r->close();
+    if ($result) {
+        $account = true;
     }
-    $dbc->close();
-
     return $account;
 }
 
@@ -204,109 +202,47 @@ function hasPartnerAccount($email)
 
 # ###################################################################
 
-define('USER', '976970_tocuser');
-define('PASSWORD', 'tWa198920');
-define('HOST', 'mysql51-039.wc1.ord1.stabletransit.com');
-define('DATABASE', '976970_toc');
-
 function login_process($email, $password)
 {
-	try {
-	$connection = new PDO("mysql:host=".HOST.";dbname=".DATABASE, USER, PASSWORD);
-} catch (PDOException $e) {
-	exit("Error: " . $e->getMessage());
-}
+    $connection = getConnection();
     $success = false;
-    
+
     if ($email == 'kashwin50@hotmail.com' || $email == 'mistyc123@gmail.com' || $email == 'kotzur.lacey@heb.com') {
         $query = $connection->prepare('select * from toc_admin where adminid=:email');
-		$query->bindParam('email', $email, PDO::PARAM_STR);
-		$query->execute();
-		
-		$result = $query->fetch(PDO::FETCH_ASSOC);
-		
-		if ($result) {
-			$verify = password_verify($password, $result["adminpwd"]);
-                    if ($verify) {
-						$_SESSION['token'] = bin2hex(random_bytes(24));
-						$success = true;
-                    }
-		}
-        
+        $query->bindParam('email', $email, PDO::PARAM_STR);
+        $query->execute();
+
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            $verify = password_verify($password, $result["adminpwd"]);
+            if ($verify) {
+                $_SESSION['token'] = bin2hex(random_bytes(24));
+                $success = true;
+            }
+        }
+
     } else {
         $query = $connection->prepare('select * from toc_register where email=:email');
-		$query->bindParam('email', $email, PDO::PARAM_STR);
-		$query->execute();
-		
-		$result = $query->fetch(PDO::FETCH_ASSOC);
-		
-		if ($result) {
-			$verify = password_verify($password, $result["password"]);
-                    if ($verify) {
-                        $_SESSION['toclevel'] = $result["toclevel"];
-                        $_SESSION['company'] = $result["company"];
-                        $_SESSION['broker'] = $result["isbroker"];
-                        $_SESSION['broker100'] = $result["broker100"];
-                        $_SESSION['regid'] = $result["idtoc_register"];
-						$_SESSION['token'] = bin2hex(random_bytes(24));
-                        $success = true;
-                    }
-		}
+        $query->bindParam('email', $email, PDO::PARAM_STR);
+        $query->execute();
+
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            $verify = password_verify($password, $result["password"]);
+            if ($verify) {
+                $_SESSION['toclevel'] = $result["toclevel"];
+                $_SESSION['company'] = $result["company"];
+                $_SESSION['broker'] = $result["isbroker"];
+                $_SESSION['broker100'] = $result["broker100"];
+                $_SESSION['regid'] = $result["idtoc_register"];
+                $_SESSION['token'] = bin2hex(random_bytes(24));
+                $success = true;
+            }
+        }
 
     }
-    return $success;
-}
-
-function login_process_bk($email, $password)
-{
-    $dbc = new mysqli("mysql51-039.wc1.ord1.stabletransit.com", "976970_tocuser", "tWa198920", "976970_toc");
-    $success = false;
-    //if ($dbc->connect_errno()) {
-    // 	printf("Connect failed: %s\n", $dbc->connect_error());
-    // 	exit();
-    //}
-    if ($email == 'kashwin50@hotmail.com' || $email == 'mistyc123@gmail.com' || $email == 'kotzur.lacey@heb.com') {
-        $qString = sprintf('select * from toc_admin where adminid="%s"', $dbc->real_escape_string($email));
-        if ($r = $dbc->query($qString)) {
-            $row_cnt = $r->num_rows;
-            if ($row_cnt > 0) {
-                if ($row = $r->fetch_assoc()) {
-                    //echo $row["adminpwd"] . '->' . $password;
-                    //$success = true;
-                    $verify = password_verify($password, $row["adminpwd"]);
-                    if ($verify) {
-						$_SESSION['token'] = bin2hex(random_bytes(24));
-						$success = true;
-                    }
-                }
-            }
-            //$r->close();
-        }
-        //$dbc->close();
-    } else {
-        $qString = sprintf('select * from toc_register where email="%s"', $dbc->real_escape_string($email));
-        if ($r = $dbc->query($qString)) {
-            $row_cnt = $r->num_rows;
-            if ($row_cnt > 0) {
-                if ($row = $r->fetch_assoc()) {
-                    $verify = password_verify($password, $row["password"]);
-                    if ($verify) {
-                        $_SESSION['toclevel'] = $row["toclevel"];
-                        $_SESSION['company'] = $row["company"];
-                        $_SESSION['broker'] = $row["isbroker"];
-                        $_SESSION['broker100'] = $row["broker100"];
-                        $_SESSION['regid'] = $row["idtoc_register"];
-						$_SESSION['token'] = bin2hex(random_bytes(24));
-                        $success = true;
-                    }
-                }
-            }
-            //$r->close();
-        }
-        //$dbc->close();
-    }
-    $r->close();
-    $dbc->close();
     return $success;
 }
 
@@ -329,7 +265,7 @@ function login_partner_process($email, $password)
             if ($row = $r->fetch_assoc()) {
                 $verify = password_verify($password, $row["password"]);
                 if ($verify) {
-					$_SESSION['token'] = bin2hex(random_bytes(24));
+                    $_SESSION['token'] = bin2hex(random_bytes(24));
                     $success = true;
                 }
             }
@@ -1215,10 +1151,13 @@ where toc_firstname <> \'\' and toc_regid =' . $rid . ' and toc_topgolf2=1 order
 
 function sendPassword($email)
 {
-    $dbc = new mysqli("mysql51-039.wc1.ord1.stabletransit.com", "976970_tocuser", "tWa198920", "976970_toc");
-    $qString = "select * from toc_register where email ='" . $email . "'";
-    $r = $dbc->query($qString);
-    while ($row = $r->fetch_assoc()) {
+    $connection = getConnection();
+    $query = $connection->prepare('select * from toc_register where email=:email');
+    $query->bindParam('email', $email, PDO::PARAM_STR);
+    $query->execute();
+    $result = $query->fetch(PDO::FETCH_ASSOC);
+
+    if ($result) {
         $to = $email;
         //$to .= ', '.'wez@example.com';
         $subject = 'H-E-B TOC Notification';
@@ -1228,7 +1167,8 @@ function sendPassword($email)
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
 
         // message
-        $message = '<h3>Email: ' . $email . '</h3><h3>Password: ' . $row["password"] . '</h3>
+        $message = '<h3>Email: ' . $email . '</h3><h3>' .
+            '<a href="https://hebtoc.com/login_reset.php?token='.$result["password"]. '">Reset Password</a></h3>
 		
 		<h4>DO NOT REPLY TO THE EMAIL ADDRESS ABOVE!<br>
 		IT IS USED TO SEND OUT MAIL, AND WILL NOT RECEIVE INBOUND MAIL.</h4>
@@ -1244,8 +1184,6 @@ function sendPassword($email)
         mail($to, $subject, $message, $headers);
 
     }
-    $r->close();
-    $dbc->close();
 }
 
 # ###################################################################
@@ -1373,4 +1311,15 @@ function validate_input2($data)
 function validate_input($data, $encoding = 'UTF-8')
 {
     return htmlentities($data, ENT_QUOTES | ENT_HTML5, $encoding);
+}
+
+function getConnection()
+{
+    try {
+        $connection = new PDO("mysql:host=" . HOST . ";dbname=" . DATABASE, USER, PASSWORD);
+    } catch (PDOException $e) {
+        exit("Error: " . $e->getMessage());
+    }
+
+    return $connection;
 }

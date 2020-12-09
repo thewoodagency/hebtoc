@@ -52,7 +52,11 @@ if(isset($_POST['formID']) && $resp->isSuccess())
     $zip=validate_input($_POST['zip']);
     $email=validate_input2($_POST['q10_email10']);
     $password=validate_input2($_POST['password']);
-    $hash=password_hash($password, PASSWORD_DEFAULT);
+    if (isset($_POST['token'])) {
+        $hash=$password;
+    } else {
+        $hash=password_hash($password, PASSWORD_DEFAULT);
+    }
     $oarea=validate_input($_POST['oarea']);
     $ophone=validate_input($_POST['ophone']);
     $carea=validate_input($_POST['carea']);

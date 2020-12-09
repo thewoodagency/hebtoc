@@ -30,23 +30,6 @@ if(isset($_POST['formID']) && $resp->isSuccess())
 	$level=validate_input($_POST['level']);
 	$damount=validate_input($_POST['damount']);
 
-    /*$cname = $_POST['cname'];
-    $ctype = $_POST['ctype'];
-    $fname = $_POST['fname'];
-    $lname = $_POST['lname'];
-    $addr1 = $_POST['addr1'];
-    $addr2 = $_POST['addr2'];
-    $city = $_POST['city'];
-    $state = $_POST['state'];
-    $zip = $_POST['zip'];
-    $email = $_POST['q10_email10'];
-    $password = $_POST['password'];
-    $oarea = $_POST['oarea'];
-    $ophone = $_POST['ophone'];
-    $carea = $_POST['carea'];
-    $cphone = $_POST['cphone'];
-    $bdm = $_POST['bdm'];*/
-
     $cname=validate_input($_POST['cname']);
     $ctype=validate_input($_POST['ctype']);
     $fname=validate_input($_POST['fname']);
@@ -58,7 +41,11 @@ if(isset($_POST['formID']) && $resp->isSuccess())
     $zip=validate_input($_POST['zip']);
     $email=validate_input2($_POST['q10_email10']);
     $password=validate_input($_POST['password']);
-    $hash=password_hash($password, PASSWORD_DEFAULT);
+    if (isset($_POST['token'])) {
+        $hash=$password;
+    } else {
+        $hash=password_hash($password, PASSWORD_DEFAULT);
+    }
     $oarea=validate_input($_POST['oarea']);
     $ophone=validate_input($_POST['ophone']);
     $carea=validate_input($_POST['carea']);
