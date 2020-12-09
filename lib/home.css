@@ -1,0 +1,182 @@
+@charset "utf-8";
+/* CSS Document */
+
+html {overflow-y: scroll;}
+
+html, body, 
+h1, h2, h3, h4, h5, h6, p, ul, li {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: Georgia, "Times New Roman", Times, serif;
+	vertical-align: baseline;
+}
+
+html { 
+  background: url(../images/bodyback.jpg) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+#wrapper {
+	width: 1024px;
+	margin: 0 auto;
+}
+
+#header {
+	background:url(../images/headerbg.gif) #6f0000 top no-repeat;
+	height: 276px;
+	width: 1024px;
+}
+
+#navigation {
+	background-color: #990000;
+	width: 1024px;
+	height:35px;
+	display:block;
+}
+
+#logo {
+	width: 332px;
+	float: left;
+	margin-top: 45px;
+	margin-left: 40px;
+}
+
+#register {
+	float: right;
+	margin-right: 50px;
+}
+
+#headerinfo {
+	background:#000;
+	color: #FFF;
+	height: 368px;
+}
+
+#headerinfo p {
+	text-align: justify;
+	padding: 14px 30px 0 0;
+	font-size: 18px;
+	line-height: 24px;
+}
+
+#slideshow {
+	width: 550px;
+	float: left;
+}
+
+#headercopy {
+	float: right;
+	width: 440px;
+}
+
+.bigText {
+	font-size: 22px;
+	line-height: 28px;
+	font-weight:bold;
+}
+
+#content {
+	background: #d29e2c;
+	color: #000;
+}
+
+#date {
+	background:url(../images/datebg2.png) no-repeat bottom;
+	height: 101px;
+	padding-top: 20px;
+}
+
+#date p {
+	text-align: center;
+	font-weight: bold;
+	padding-top: 10px;
+}
+.d1 {font-size: 24px;}
+.d2 {font-size: 34px;}	
+
+#goal {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+#contact {
+	background: #990000;
+	padding: 30px;
+	color: #FFF;
+	height: 142px;
+}
+
+#charitylogo {
+	float: left;
+	width: 493px;
+	background: url(../images/charities2.png) no-repeat;
+	height:145px
+}
+
+#charitylogo p {
+	margin-top: 103px;
+	margin-left: 75px;
+}
+
+#charitylogo a {
+	color: #e7b22f;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size: 20px;
+	text-decoration: none;
+}
+
+#charitylogo p a:hover {
+	text-decoration: underline;
+}
+
+#charitylist {
+	margin-top: 7px;
+	float: right;
+	width: 430px;
+	padding-right: 30px;
+	background-color: #d29e2c;
+}
+
+#charitylist li a {
+	font-size: 12px;
+	color: #000;
+	text-decoration: none;
+}
+
+#charitylist li a:hover {
+	text-decoration: none;
+}
+
+#contact p {
+	padding-bottom: 10px;
+}
+
+#footer {
+	background: #000;
+	text-align: center;
+	padding: 20px;
+	color: #FFF;
+	font-size: 12px;
+}
+
+#footer img{
+	padding-bottom: 20px;
+}
+
+#footer a {
+	color: #e7b22f;
+	text-decoration: none;
+}
+
+#footer a:hover {
+	color: #e7b22f;
+	text-decoration: underline;
+}
