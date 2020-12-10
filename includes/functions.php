@@ -10,11 +10,6 @@ define("THIRD", "June 3");
 define("FOURTH", "June 4");
 define("FIFTH", "June 5");
 //define("SIXTH", "6/10");
-
-define('USER', '976970_tocuser');
-define('PASSWORD', 'tWa198920');
-define('HOST', 'mysql51-039.wc1.ord1.stabletransit.com');
-define('DATABASE', '976970_toc');
 # ###################################################################
 
 function getTocLevel($sp)
@@ -1315,6 +1310,11 @@ function validate_input($data, $encoding = 'UTF-8')
 
 function getConnection()
 {
+    define('USER', '976970_tocuser');
+    define('PASSWORD', 'tWa198920');
+    define('HOST', 'mysql51-039.wc1.ord1.stabletransit.com');
+    define('DATABASE', '976970_toc');
+    
     try {
         $connection = new PDO("mysql:host=" . HOST . ";dbname=" . DATABASE, USER, PASSWORD);
     } catch (PDOException $e) {

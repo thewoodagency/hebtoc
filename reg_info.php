@@ -410,7 +410,3 @@ if (isset($_SESSION['token']) && isset($_SESSION['email'])) {
 </div>
 </body>
 <!-- InstanceEnd --></html>
-<?
-$r->close();
-$dbc->close();
-?>
