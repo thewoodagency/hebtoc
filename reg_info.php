@@ -1,8 +1,6 @@
 <?php
-require('./includes/config.inc.php');
-//require ('./includes/mysqli_connect.php');
-require('./includes/config.php');
-require('./includes/functions.php');
+require('../../lib/config.php');
+require('../../lib/functions.php');
 session_start();
 
 if (isset($_SESSION['token']) && isset($_SESSION['email'])) {
@@ -67,11 +65,9 @@ if (isset($_SESSION['token']) && isset($_SESSION['email'])) {
 <head>
     <title>H-E-B Tournament of Champions</title>
     <!-- InstanceBeginEditable name="doctitle" -->
-    <title>Untitled Document</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta name="HandheldFriendly" content="true"/>
-    <title>Form</title>
     <link href="lib/formCss.css?3.1.26" rel="stylesheet" type="text/css"/>
     <link type="text/css" rel="stylesheet" href="lib/nova.css?3.1.26"/>
     <link type="text/css" media="print" rel="stylesheet" href="lib/printForm.css?3.1.26"/>
