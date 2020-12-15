@@ -15,7 +15,7 @@ $resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR
 
 session_start();
 //require ('../../lib/config.inc.php');
-require ('../../lib/mysqli_connect.php');
+require ('../../lib/config.php');
 require ('../../lib/functions.php');
 
 $message = '';
@@ -62,46 +62,70 @@ if(isset($_POST['formID']) && $resp->isSuccess())
     $carea=validate_input($_POST['carea']);
     $cphone=validate_input($_POST['cphone']);
     $bdm=validate_input($_POST['bdm']);
-    $qString = sprintf('replace into toc_register (idtoc_register, toclevel, damount, company, comtype, fname, lname, addr1, addr2, city, state, zip, email, password, oarea, ophone, carea, cphone, bdm, registerd_date) values ("%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s")',
-        $dbc->real_escape_string($reg_id),
-        $dbc->real_escape_string($level),
-        $dbc->real_escape_string($damount),
-        $dbc->real_escape_string($cname),
-        $dbc->real_escape_string($ctype),
-        $dbc->real_escape_string($fname),
-        $dbc->real_escape_string($lname),
-        $dbc->real_escape_string($addr1),
-        $dbc->real_escape_string($addr2),
-        $dbc->real_escape_string($city),
-        $dbc->real_escape_string($state),
-        $dbc->real_escape_string($zip),
-        $dbc->real_escape_string($email),
-        $dbc->real_escape_string($hash),
-        $dbc->real_escape_string($oarea),
-        $dbc->real_escape_string($ophone),
-        $dbc->real_escape_string($carea),
-        $dbc->real_escape_string($cphone),
-        $dbc->real_escape_string($bdm),
-        $dbc->real_escape_string($today));
+    // $qString = sprintf('replace into toc_register (idtoc_register, toclevel, damount, 
+    // company, comtype, fname, lname, addr1, addr2, city, state, zip, email, password, oarea, ophone, 
+    // carea, cphone, bdm, registerd_date) 
+    // values ("%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s")',
+    //     $dbc->real_escape_string($reg_id),
+    //     $dbc->real_escape_string($level),
+    //     $dbc->real_escape_string($damount),
+    //     $dbc->real_escape_string($cname),
+    //     $dbc->real_escape_string($ctype),
+    //     $dbc->real_escape_string($fname),
+    //     $dbc->real_escape_string($lname),
+    //     $dbc->real_escape_string($addr1),
+    //     $dbc->real_escape_string($addr2),
+    //     $dbc->real_escape_string($city),
+    //     $dbc->real_escape_string($state),
+    //     $dbc->real_escape_string($zip),
+    //     $dbc->real_escape_string($email),
+    //     $dbc->real_escape_string($hash),
+    //     $dbc->real_escape_string($oarea),
+    //     $dbc->real_escape_string($ophone),
+    //     $dbc->real_escape_string($carea),
+    //     $dbc->real_escape_string($cphone),
+    //     $dbc->real_escape_string($bdm),
+    //     $dbc->real_escape_string($today));
 
-    if (isset($_POST['new_reg']))
-    {
-        $dbc->query($qString);
-        $dbc->close();
-        sendNotification($email);
-        //if (hasAccount($email)) {
-        //	echo "<h3>You (" . $email . ") have already registered, please <a href='reg_info.php'>login to your account</a> or request your password.</h3>";
-        //} else {
-        //	$dbc->query($qString);
-        //	$dbc->close();
-        //	sendNotification($email);
+    $query = $connection->prepare('replace into toc_register (idtoc_register, toclevel, damount, company, comtype, 
+    fname, lname, addr1, addr2, city, state, zip, email, password, oarea, ophone, carea, cphone, bdm, registerd_date) 
+    values (:rid, :level, :damount, :cname, :ctype, :fname, :lname, :addr1, :addr2, :city, :state, :zip, :email, :password, 
+    :oarea, :ophone, :carea, :cphone, :bdm, :today)');
 
-        //}
-    } else {
-        $dbc->query($qString);
-        $dbc->close();
-        sendNotification($email);
-    }
+    $query->bindParam('rid', $reg_id, PDO::PARAM_STR);
+    $query->bindParam('level', $level, PDO::PARAM_STR);
+    $query->bindParam('damount', $damount, PDO::PARAM_STR);
+    $query->bindParam('cname', $cname, PDO::PARAM_STR);
+    $query->bindParam('ctype', $ctype, PDO::PARAM_STR);
+    $query->bindParam('fname', $fname, PDO::PARAM_STR);
+    $query->bindParam('lname', $lname, PDO::PARAM_STR);
+    $query->bindParam('addr1', $addr1, PDO::PARAM_STR);
+    $query->bindParam('addr2', $addr2, PDO::PARAM_STR);
+    $query->bindParam('city', $city, PDO::PARAM_STR);
+    $query->bindParam('state', $state, PDO::PARAM_STR);
+    $query->bindParam('zip', $zip, PDO::PARAM_STR);
+    $query->bindParam('email', $email, PDO::PARAM_STR);
+    $query->bindParam('password', $hash, PDO::PARAM_STR);
+    $query->bindParam('oarea', $oarea, PDO::PARAM_STR);
+    $query->bindParam('ophone', $ophone, PDO::PARAM_STR);
+    $query->bindParam('carea', $carea, PDO::PARAM_STR);
+    $query->bindParam('cphone', $cphone, PDO::PARAM_STR);
+    $query->bindParam('bdm', $bdm, PDO::PARAM_STR);
+    $query->bindParam('today', $today, PDO::PARAM_STR);
+	
+    $query->execute(); 
+    sendNotification($email);
+
+    // if (isset($_POST['new_reg']))
+    // {
+    //     $dbc->query($qString);
+    //     $dbc->close();
+    //     sendNotification($email);
+    // } else {
+    //     $dbc->query($qString);
+    //     $dbc->close();
+    //     sendNotification($email);
+    // }
     //login after register
     if (login_process($email, $password)) {
         $_SESSION['email']=$email;

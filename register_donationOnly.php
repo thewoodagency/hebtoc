@@ -3,8 +3,6 @@
 //header('Location: https://hebtoc.com/login_proc.php'); //offseaon page
 
 
-require ('../../lib/config.inc.php');
-require ('../../lib/mysqli_connect.php');
 require ('../../lib/functions.php');
 setlocale(LC_MONETARY, 'en_US');
 session_start();
