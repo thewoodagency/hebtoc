@@ -80,7 +80,7 @@ require ('../../lib/functions.php');
 </script>
 <div id="wrapper">
 <div id="header">
-	<div id="logo"><img src="images/toclogo_30th.gif" width="300" height="177" /></div><div id="register"><a href="register.php"><img src="images/register34.png" width="307" height="269" border="0" /></a></div>
+	<div id="logo"><img src="images/logo-2021.png" width="300" height="177" /></div><div id="register"><a href="register.php"><img src="images/register36.png" width="307" height="269" border="0" /></a></div>
 </div>
 <div id="navigation">
 	<!--div style="text-align: center;color:#FFF;font-size:20px"><strong>REGISTRATION WILL OPEN ON WEDNESDAY, JANUARY 2, 2019</strong></div>-->
@@ -194,7 +194,7 @@ $(window).load(function() {
 <div id="content"><div id="date">
   <p><span class="d1">Our 2020 event will be held</span><br />
 <span class="d2">Wednesday - Friday, June 3-5</span></p></div>
-<div id="goal"><img src="images/total2019.png"/></div>
+<div id="goal"><img src="images/total2020.jpg"/></div>
 </div>
 <div id="contact"><!-- InstanceBeginEditable name="additional info" -->
 <div id="charitylogo">

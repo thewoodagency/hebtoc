@@ -2,24 +2,28 @@
 ini_set('display_errors', 1);
 error_reporting(~0);
 
-require ('../includes/config.inc.php');
-require ('../includes/mysqli_connect.php');
-require ('../includes/functions.php');
+require ('../../../lib/config.php');
+require ('../../../lib/functions.php');
 
 $message = "";
 if(isset($_POST['formID']))
 {
-	$yourid = $_POST['yourid'];
+	$yourid = validate_input($_POST['yourid']);
     $signed = date("Y-m-d h:i:sa");
-	$qString = "Update toc_events SET toc_charity_waiver = 1, toc_charity_waiver_signed='". $signed . "' WHERE hid=" . $yourid;
+	$qString = "Update toc_events SET toc_charity_waiver = 1, toc_charity_waiver_signed=:signed WHERE hid=:yourid";
+
+    $query = $connection->prepare($qString);
+    $query->bindParam('signed', $signed, PDO::PARAM_STR);
+    $query->bindParam('yourid', $yourid, PDO::PARAM_STR);
+
+    $query->execute();
+
     //echo $signed;
-	if($dbc->query($qString) === TRUE) {
+	if($query->rowCount()) {
         $message = "Thank you. Your waiver form has been successfully submitted.";
     } else {
         $message = "Something went wrong. Please try again later";
     }
-
-	$dbc->close();
 } else {
 	$message = "Something went wrong. Please try again later";
     die();

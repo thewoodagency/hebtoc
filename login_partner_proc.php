@@ -5,8 +5,8 @@ error_reporting(~0);
 //temp code for off season
 //header("Location: partner_register.php");
 
-require ('./includes/config.inc.php');
-require ('./includes/functions.php');
+require ('../../lib/config.inc.php');
+require ('../../lib/functions.php');
 session_start();
 if(isset($_SESSION['email']))
   unset($_SESSION['email']);

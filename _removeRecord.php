@@ -1,19 +1,20 @@
 <?php
-require ('./includes/config.inc.php');
-require ('./includes/mysqli_connect.php');
-require ('./includes/functions.php');
+require ('../../lib/config.php');
+require ('../../lib/functions.php');
 session_start();
 
-if(isset($_SESSION['admin']) && $_SESSION['admin'] == 'kashwin50@hotmail.com')
+if(isset($_SESSION['token']) && isset($_SESSION['admin']) && $_SESSION['admin'] == 'kashwin50@hotmail.com')
 {
-	$email = $_SESSION['email'];
+	$email = validate_input2($_SESSION['email']);
 	if (isset($_GET['rid']) && $_GET['rid']<>"")
 	{
-		$qString = 'DELETE t1 FROM
-			toc_register as t1 WHERE t1.idtoc_register=' . $_GET['rid'];
-			//echo $qString;
-		$dbc->query($qString);
-		$dbc->close();
+        $rid = validate_input($_GET['rid']);
+
+        $query = $connection->prepare('DELETE t1 FROM toc_register as t1 WHERE t1.idtoc_register=:rid');
+        $query->bindParam('rid', $rid, PDO::PARAM_STR);
+
+        $query->execute();
+
 		if(isset($_SESSION['email']))
   			unset($_SESSION['email']);
 		header("Location: admin_panel.php");
@@ -127,7 +128,3 @@ c/o KATHY ASHWIN<br>
 </div>
 </body>
 <!-- InstanceEnd --></html>
-<?
-	$r->close();
-	$dbc->close();
-?>

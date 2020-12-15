@@ -14,9 +14,9 @@ $recaptcha = new \ReCaptcha\ReCaptcha($secret);
 $resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
 
 session_start();
-//require ('./includes/config.inc.php');
-require ('./includes/mysqli_connect.php');
-require ('./includes/functions.php');
+//require ('../../lib/config.inc.php');
+require ('../../lib/mysqli_connect.php');
+require ('../../lib/functions.php');
 
 $message = '';
 

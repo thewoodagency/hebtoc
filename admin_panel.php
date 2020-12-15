@@ -1,21 +1,20 @@
 <?php
-require ('./includes/config.inc.php');
-require ('./includes/mysqli_connect.php');
-require ('./includes/functions.php');
+require ('../../lib/config.php');
+require ('../../lib/functions.php');
 session_start();
-if(isset($_SESSION['admin']) && $_SESSION['admin'] == 'kashwin50@hotmail.com')
+if(isset($_SESSION['token']) && isset($_SESSION['admin']) && $_SESSION['admin'] == 'kashwin50@hotmail.com')
 {
     $email = validate_input2($_SESSION['email']);
 	$regDate = '';
 	setlocale(LC_MONETARY, 'en_US');
 	//temp query for 2020 update
-    $qString = "select * from toc_register inner join toc_level  on toclevel = tlName where idtoc_register > 8730 order by idtoc_register, toclevel";
-	//$qString = "select * from toc_register inner join toc_level  on toclevel = tlName order by idtoc_register, toclevel"; //to get tlAmount
-	 //"select * from toc_register order by idtoc_register, toclevel";
-	$r = $dbc->query($qString);
+    $qString = "select * from toc_register inner join toc_level  on toclevel = tlName order by idtoc_register, toclevel";
+    $query = $connection->prepare($qString);
+    $query->execute();
+
 	$tbrows = '';
 	$rowcolor = 0;
-	while ($row = $r->fetch_assoc())
+	while ($row = $query->fetch(PDO::FETCH_ASSOC))
 	{
 		if ($rowcolor%2==0)$tbrows .= '<tr class="even">';
 		else $tbrows.='<tr>';
@@ -180,7 +179,3 @@ c/o KATHY ASHWIN<br>
 </div>
 </body>
 <!-- InstanceEnd --></html>
-<?
-	$r->close();
-	$dbc->close();
-?>

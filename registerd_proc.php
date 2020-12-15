@@ -13,8 +13,8 @@ $recaptcha = new \ReCaptcha\ReCaptcha($secret);
 
 $resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
 
-require ('./includes/config.php');
-require ('./includes/functions.php');
+require ('../../lib/config.php');
+require ('../../lib/functions.php');
 
 $message = '';
 if(isset($_POST['formID']) && $resp->isSuccess())

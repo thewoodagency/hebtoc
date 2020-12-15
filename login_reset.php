@@ -2,9 +2,9 @@
 ini_set('display_errors', 1);
 error_reporting(~0);
 
-require ('./includes/config.inc.php');
-require ('./includes/config.php');
-require ('./includes/functions.php');
+require ('../../lib/config.inc.php');
+require ('../../lib/config.php');
+require ('../../lib/functions.php');
 session_start();
 if(isset($_SESSION['email']))
   unset($_SESSION['email']);

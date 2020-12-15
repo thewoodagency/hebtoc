@@ -5,8 +5,8 @@ error_reporting(~0);
 
 
 //require ('./includes/config.inc.php');
-require ('./includes/mysqli_connect.php');
-require ('./includes/functions.php');
+require ('../../lib/mysqli_connect.php');
+require ('../../lib/functions.php');
 
 session_start();
 

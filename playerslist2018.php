@@ -1,5 +1,5 @@
 <?php
-//include 'includes/mysqlConnect.php';
+//include '../../lib/mysqlConnect.php';
 
 $qString = "select * from toc_teetime order by tcourse, CAST(teams AS DECIMAL), tlast";
 $Connect = mysqli_connect("mysql51-039.wc1.ord1.stabletransit.com", "976970_tocuser", "tWa198920", "976970_toc");

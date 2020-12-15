@@ -2,9 +2,8 @@
 ini_set('display_errors', 1);
 error_reporting(~0);
 
-require ('../includes/config.inc.php');
-require ('../includes/mysqli_connect.php');
-require ('../includes/functions.php');
+require ('../../../lib/config.php');
+require ('../../../lib/functions.php');
 
 if(isset($_POST['formID'])) {
     $password = validate_input($_POST['password']); //HEBTOC2019
@@ -17,11 +16,14 @@ if(isset($_POST['formID'])) {
         $employees = getEmployeesFromEvents($company);
 
         //get current status
-        $qString = sprintf('SELECT * FROM toc_events inner join toc_register on toc_regid = idtoc_register 
-where toc_charity=1 and company = "%s"', $dbc->real_escape_string($company));
+        $qString = 'SELECT * FROM toc_events inner join toc_register on toc_regid = idtoc_register ' .
+            'where toc_charity=1 and company=:company';//, $dbc->real_escape_string($company));
 
-        $r = $dbc->query($qString);
-        while ($row = $r->fetch_assoc())
+        $query = $connection->prepare($qString);
+        $query->bindParam('company', $company, PDO::PARAM_STR);
+        $query->execute();
+
+        while ($row = $query->fetch(PDO::FETCH_ASSOC))
         {
             $signed = '<strong>Need to sign waiver</strong>';
             if ($row["toc_charity_waiver"] == 1) $signed = 'Signed at ' . $row["toc_charity_waiver_signed"];
@@ -122,7 +124,7 @@ where toc_charity=1 and company = "%s"', $dbc->real_escape_string($company));
             <p align="center"><strong><u>WAIVER, RELEASE AND INDEMNITY AGREEMENT</u></strong><br>
                 <strong><u>TOURNAMENT OF CHAMPIONS CHARITY WORK  PROJECT</u></strong></p>
             <p>This Release,  Waiver of Liability and Indemnity Agreement (&quot;Agreement&quot;) is made and  entered into effective <span style="background-color: yellow"><u><?php echo date("m") ?></u>(month), <u><?php echo date("d") ?></u>(date), <u><?php echo date("Y") ?></u>(year)</span>, by and among  HEB Grocery Company, LP (&quot;HEB&quot;), the H-E-B Tournament of Champions  Charitable Trust (the &ldquo;TOC Trust&rdquo;), the Participating Organizations (as defined  below), and the undersigned individual (&ldquo;Participant&rdquo;).  </p>
-            <p> Whereas, H-E-B will be sponsoring and the TOC  Trust will be hosting the H-E-B Tournament of Champions (the &ldquo;TOC&rdquo;) and related  activities, a charitable fundraiser benefitting various and numerous charities  throughout the state of Texas, on or about June 2, 2020 through June 5, 2020;  </p>
+            <p> Whereas, H-E-B will be sponsoring and the TOC  Trust will be hosting the H-E-B Tournament of Champions (the &ldquo;TOC&rdquo;) and related  activities, a charitable fundraiser benefitting various and numerous charities  throughout the state of Texas, on or about <?php echo FIRST ?>, <?php echo TOCYEAR ?> through <?php echo FIFTH ?>, <?php echo TOCYEAR ?>;  </p>
             <p>Whereas, the TOC  includes Charity Work Projects (the &ldquo;Charity Projects&rdquo;) held at several  locations in the Greater San Antonio area, including but not limited to those hosted  by the following participating organizations: Homes for Our Troops, Fisher  House Foundation, Inc., the Warrior Family Support Center, the San Antonio Food  Bank, Madonna Center, Inc., Magdalena House/Magdalena Ministries, Guadalupe  Community Center/Catholic Charities of San Antonio, and the Eastside Education  &amp; Training Center/Alamo Colleges District (collectively, the &ldquo;Participating  Organizations&rdquo;); </p>
 <p>Whereas, the TOC  and the Charity Projects include various activities designed to assist and  better the community and individuals in need, including but not limited to,  building fences, landscaping, assembling furniture, distributing food,  painting, roofing, building and installing storage sheds, benches, and tables,  picking up litter, and general cleaning; and</p>
 <p>Whereas,  Participant has volunteered to participate in the TOC and/or the Charity  Projects and has agreed to release the sponsoring and hosting entities from any  liability associated therewith;</p>

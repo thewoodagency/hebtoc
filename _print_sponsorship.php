@@ -1,29 +1,15 @@
 <?php
 //ini_set('display_errors', 0);
 //error_reporting(~0);
-//require ('includes/config.inc.php');
-require ('includes/mysqli_connect.php');
-require ('includes/functions.php');
+require ('../../lib/functions.php');
 session_start();
 
-if(isset($_SESSION['email']))
+if(isset($_SESSION['token']) && isset($_SESSION['email']))
 {
 	$email = validate_input2($_SESSION['email']);
 	$rid = validate_input($_SESSION['regid']);
 	//$rid = $_GET['rid'];
 	echo '<div style="text-align:center; padding-bottom:7px"><img src="images/toclogo_30th.gif" width="190" height="112" alt=""/></div>';
-	/*echo getRegistration($rid);
-	echo getHotelInfo($rid);
-	//echo getTennisInfo($rid);
-	echo getPrivateInfo($rid);
-	echo getPrivateDinner($rid);
-	echo getSummitInfo($rid);
-	echo getDinnerBuffetInfo($rid);
-	echo getCharityWorkInfo($rid);
-	echo getReceptionInfo1($rid);
-	echo getReceptionInfo2($rid);
-	echo getTableInfo($rid);
-	echo getGolfInfo($rid);*/
     echo getRegistration($rid);
     echo getTourAcademy($rid);
     echo getPrivateInfo2($rid);

@@ -7,7 +7,7 @@
  
 // Include the sessions file:
 // The file already starts the session.
-require('includes/db_sessions.inc.php');
+require('../../lib/db_sessions.inc.php');
 ?><!doctype html>
 <html lang="en">
 <head>

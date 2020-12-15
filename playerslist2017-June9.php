@@ -1,5 +1,5 @@
 <?php
-include 'includes/mysqlConnect.php';
+include '../../lib/mysqlConnect.php';
 
 $qString = "select * from toc_teetime2 order by teams, tlast";
 

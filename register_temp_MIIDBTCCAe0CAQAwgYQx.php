@@ -1,8 +1,8 @@
 <?php
 
-require ('./includes/config.inc.php');
-require ('./includes/mysqli_connect.php');
-require ('./includes/functions.php');
+require ('../../lib/config.inc.php');
+require ('../../lib/mysqli_connect.php');
+require ('../../lib/functions.php');
 setlocale(LC_MONETARY, 'en_US');
 
 session_start();

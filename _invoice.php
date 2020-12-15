@@ -1,21 +1,24 @@
 <?php
-require ('./includes/config.inc.php');
-require ('./includes/mysqli_connect.php');
-require ('./includes/functions.php');
+require ('../../lib/config.php');
+require ('../../lib/functions.php');
 session_start();
 
-if(isset($_SESSION['email']))
+if(isset($_SESSION['token']) && isset($_SESSION['email']))
 {
 	$email = $_SESSION['email'];
 	$rid = $_SESSION['regid'];
 		
 	$regDate = '';
 	setlocale(LC_MONETARY, 'en_US');
-	//$qString = sprintf('select * from toc_register where email="%s"', $dbc->real_escape_string($email));
-	$qString = sprintf('select * from toc_register where idtoc_register="%s" and email="%s"', 
-			$dbc->real_escape_string($rid), $dbc->real_escape_string($email));
-	$r = $dbc->query($qString);
-	if ($row = $r->fetch_assoc())
+
+    $query = $connection->prepare('select * from toc_register where idtoc_register=:rid and email=:email');
+    $query->bindParam('email', $email, PDO::PARAM_STR);
+    $query->bindParam('rid', $rid, PDO::PARAM_STR);
+
+    $query->execute();
+    $row = $query->fetch(PDO::FETCH_ASSOC);
+
+	if ($row)
 	{
 		$_SESSION['toclevel'] = $row["toclevel"];
 		$_SESSION['regid'] = $row["idtoc_register"];
@@ -98,8 +101,8 @@ Director</td></tr>
 <tr><td colspan="3" align="center"><div id="footer"><span class="footer1">H-E-B Tournament of Champions Charitable Trust</span><br>
 <span class="footer2">646 S. Flores, San Antonio, TX 78204 | Phone: (210) 367-1225 </span></div></td></tr>
 </table>
-<div class="imgarea"><img src="images/w9_20.gif" /></div>
-	<div class="imgarea"><img src="images/achbank2.gif" /></div>
+<div class="imgarea"><img src="images/2021W-9.png" width="600px"/></div>
+	<div class="imgarea"><img src="images/achbank.png" /></div>
 </body>
 </html>
 <?

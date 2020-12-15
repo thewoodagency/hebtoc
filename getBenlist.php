@@ -1,7 +1,7 @@
 <?php
-require ('./includes/config.inc.php');
-require ('./includes/mysqli_connect.php');
-require ('./includes/functions.php');
+require ('../../lib/config.inc.php');
+require ('../../lib/mysqli_connect.php');
+require ('../../lib/functions.php');
 
 $qString = 'SELECT ben FROM toc_ben order by idtoc_ben';
 $r = $dbc->query($qString);

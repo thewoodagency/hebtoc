@@ -1,24 +1,12 @@
-<?php
-require ('../../lib/functions.php');
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/homepage.dwt" codeOutsideHTMLIsLocked="false" -->
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/subpage.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="description" content="We welcome those of you who will experience this great event for the first time; and, we welcome back the many Sponsors who have partnered with us through the years. Our mission of helping the children of Texas and supporting education through hundreds of worthwhile organizations is made possible because of the generosity of our Sponsors">
 <!-- InstanceBeginEditable name="head" -->
-<link rel="stylesheet" href="nivo-slider.css" type="text/css" media="screen" />
+<title>Tee Times | H-E-B Tournament of Champions</title>
 <!-- InstanceEndEditable -->
-<title>H-E-B Tournament of Champions</title>
-<script type="text/javascript" src="lib/jquery-1.4.3.min.js"></script>
-<script src="lib/ticker.js"></script>
 <script type="text/javascript" src="stmenu.js"></script>
-<link rel="stylesheet" type="text/css" href="lib/home.css">
-<script>
-  $(function() {
-    $('#charitylist').vTicker('init', {mousePause:true});
-  });
-</script>
+<link rel="stylesheet" type="text/css" href="lib/subpage.css">
 </head>
 <body class="pageStyle">
 <script>
@@ -32,10 +20,9 @@ require ('../../lib/functions.php');
 </script>
 <div id="wrapper">
 <div id="header">
-	<div id="logo"><img src="images/toclogo_30th.gif" width="300" height="177" /></div><div id="register"><a href="register.php"><img src="images/register34.png" width="307" height="269" border="0" /></a></div>
+	<div id="logo"><a href="/"><img src="images/toclogo_30th.gif" width="300" height="177" /><!--<img src="../images/tocweblogo.gif" width="332" height="197" border="0" /></a>--></div><div id="register"><a href="register.php"><img src="images/register34.png" width="307" height="269" border="0" /></a></div>
 </div>
 <div id="navigation">
-	<!--div style="text-align: center;color:#FFF;font-size:20px"><strong>REGISTRATION WILL OPEN ON WEDNESDAY, JANUARY 2, 2019</strong></div>-->
 <script type="text/javascript">
 <!--
 stm_bm(["menu123c",980,"","blank.gif",0,"","",1,0,250,0,1000,1,0,0,"","",0,0,1,2,"default","hand","",1,25],this);
@@ -106,56 +93,19 @@ stm_em();
 
 
 </div>
-<div id="headerinfo"><!-- InstanceBeginEditable name="headerinfo" -->
-<script type="text/javascript" src="jquery.nivo.slider.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#slider img:gt(0)').hide(); 
-});
-$(window).load(function() {
-	$('#slider').nivoSlider();
-});
-</script>
-<!-- slide -->
-<div id="slideshow">
-  <div id="slider-wrapper">
-  <div id="slider" class="nivoSlider">
-  <!--img src="images/slides/2017/demo.jpg" width="550" height="368" alt=""/-->
-      <img src="images/slides/2020/1.jpg" width="550" height="368" alt=""/>
-      <img src="images/slides/2020/2.jpg" width="550" height="368" alt=""/>
-      <img src="images/slides/2020/3.jpg" width="550" height="368" alt=""/>
-      <img src="images/slides/2020/4.jpg" width="550" height="368" alt=""/>
-      <img src="images/slides/2020/5.jpg" width="550" height="368" alt=""/>
-      <img src="images/slides/2020/6.jpg" width="550" height="368" alt=""/>
-      <img src="images/slides/2020/7.jpg" width="550" height="368" alt=""/>
-      <img src="images/slides/2020/8.jpg" width="550" height="368" alt=""/>
-      <img src="images/slides/2020/9.jpg" width="550" height="368" alt=""/>
-      <img src="images/slides/2020/10.jpg" width="550" height="368" alt=""/>
-      <img src="images/slides/2020/11.jpg" width="550" height="368" alt=""/>
-  </div>
-  </div>
-</div>
-<!-- end slide --><div id="headercopy">
-  <p>We are excited to announce our 35th Anniversary milestone of the H-E-B Tournament of Champions.  Please join us this year at the beautiful JW Marriott Hill Country Resort & Spa in San Antonio, Texas, as we celebrate with an informative, heartwarming and memorable event.</p>
-  <p>The lives of many Texas families have been touched through the years thanks to our dedicated and generous Sponsors.  We are forever grateful to the companies that have partnered with us and shared our vision of helping others.</p>
-  <p>Register your company now and experience this great event! </p>
-<p><!--/span--></p>
-</div><!-- InstanceEndEditable -->
+<div id="headerinfo"><!-- InstanceBeginEditable name="headerinfo" --><h1>Tee Times</h1>
+<!-- InstanceEndEditable -->
 
 </div>
-<div id="content"><div id="date">
-  <p><span class="d1">Our 2019 event will be held</span><br />
-<span class="d2">Wednesday - Friday, June 5-7</span></p></div>
-<div id="goal"><img src="images/total2019.png"/></div>
+<div id="content"><!-- InstanceBeginEditable name="content" -->
+  <p><strong>Tee Times and Course Locations </strong>(will be posted on Saturday, May 29, 2021)</p>
+   <!--<p> <a href="/golfers" target="_blank">Click here to see the Topgolf Player's information</a> (Wednesday, June 3)</p>
+   <p> <a href="/topgolf" target="_blank">Click here to see the Topgolf player's information </a>(Friday, June 5)</p>-->
+	
+<!-- InstanceEndEditable -->
 </div>
 <div id="contact"><!-- InstanceBeginEditable name="additional info" -->
-<div id="charitylogo">
-<p><a href="https://myheb.force.com/MCI/login" target="_blank">Click here to apply for TOC funding</a></p></div>
-<div id="charitylist">
-  <ul> 
-   <?php echo getBenList(); ?>
-  </ul>
-</div>
+
 <!-- InstanceEndEditable -->
 </div>
 <div id="footer"><p><img src="images/logoft2.png" width="120" height="72" /></p>

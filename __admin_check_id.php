@@ -1,8 +1,8 @@
 <?php
 
-require ('includes/config.inc.php');
-require ('includes/mysqli_connect.php');
-require ('includes/functions.php');
+require ('../../lib/config.inc.php');
+require ('../../lib/mysqli_connect.php');
+require ('../../lib/functions.php');
 
 $qString = "select idtoc_register, toclevel from toc_register where toclevel <> 'Donation Only' order by idtoc_register, toclevel";
 $r = $dbc->query($qString);
