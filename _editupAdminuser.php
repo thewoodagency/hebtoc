@@ -1,12 +1,14 @@
 <?php
+//h3b@dmin
 ini_set('display_errors', 1);
 error_reporting(~0);
 
-require ('../../lib/config.inc.php');
-require ('../../lib/mysqli_connect.php');
+require ('../../lib/config.php');
 require ('../../lib/functions.php');
+session_start();
 $message = '';
-if(isset($_POST['formID']))
+
+if(isset($_POST['formID']) && isset($_SESSION['token']))
 {
 	$adminid=validate_input($_POST['adminid']);
 	$username=validate_input2($_POST['username']);
@@ -14,22 +16,24 @@ if(isset($_POST['formID']))
     $hash=password_hash($password, PASSWORD_DEFAULT);
 	$department=validate_input($_POST['department']);
 	$lastlogin= date('Y-m-d H:i:s', strtotime(str_replace('-', '/', $_POST['lastlogin'])));
-	
-	$qString = sprintf('replace into toc_admin (idtoc_admin, adminid, adminpwd, department, lastlogin) values ("%s", "%s", "%s", "%s", "%s")',
-			$dbc->real_escape_string($adminid),
-			$dbc->real_escape_string($username),
-			$dbc->real_escape_string($hash),
-			$dbc->real_escape_string($department),
-			$dbc->real_escape_string($lastlogin));
-	$dbc->query($qString);
-	$dbc->close();
+    
+    $query = $connection->prepare('replace into toc_admin (idtoc_admin, adminid, adminpwd, department, lastlogin) 
+    values (:adminid, :username, :hash, :department, :lastlogin)');
+
+    $query->bindParam('adminid', $adminid, PDO::PARAM_STR);
+    $query->bindParam('username', $username, PDO::PARAM_STR);
+    $query->bindParam('hash', $hash, PDO::PARAM_STR);
+    $query->bindParam('department', $department, PDO::PARAM_STR);
+    $query->bindParam('lastlogin', $lastlogin, PDO::PARAM_STR);
+    $query->execute(); 
+    
 	if (isset($_POST['new_reg'])) 
 	{
 		header("Location: admin_officer_adminusers.php");
 	} else if (isset($_POST['source'])) {
 		header("Location: admin_partner_department.php");
 	} else {
-		header("Location: _editAdminuser.php?data=true&remail=".$username);
+		header("Location: _editAdminuser.php?data=true&remail=".$adminid);
 	}
 }
 ?>

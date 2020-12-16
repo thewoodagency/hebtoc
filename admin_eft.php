@@ -3,10 +3,11 @@ require ('../../lib/config.inc.php');
 require ('../../lib/mysqli_connect.php');
 require ('../../lib/functions.php');
 session_start();
+require_once('../../lib/session.php');
 
-if(isset($_SESSION['admin']) && $_SESSION['admin'] == 'kashwin50@hotmail.com')
+if(isset($_SESSION['admin']) && $_SESSION['admin'] == TOCEMAIL)
 {
-	$email = $_SESSION['email'];
+	$email = validate_input2($_SESSION['email']);
 	$regDate = '';
 	setlocale(LC_MONETARY, 'en_US');
 	$qString = "select idtoc_eft, company1, dba, apfname, aplname, apemail, apphone, sbdate from toc_eft order by idtoc_eft";

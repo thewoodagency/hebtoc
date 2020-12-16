@@ -10,13 +10,13 @@ $lang = 'en';
 require('./lib/recaptcha/src/autoload.php');
 $recaptcha = new \ReCaptcha\ReCaptcha($secret);
 
-//$resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
+$resp = $recaptcha->verify($_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR']);
 
 require ('../../lib/config.inc.php');
 require ('../../lib/mysqli_connect.php');
 require ('../../lib/functions.php');
 $message = '';
-if(isset($_POST['formID'])) //&& $resp->isSuccess())
+if(isset($_POST['formID']) && $resp->isSuccess())
 {
 	$reg_id=''; //check reg_id error;
 	$today=date('m-d-Y');
@@ -28,7 +28,7 @@ if(isset($_POST['formID'])) //&& $resp->isSuccess())
         $reg_id=validate_input($_POST['reg_id']);
         $today=validate_input($_POST['reg_date']);
     }
-    $tocflag=validate_input($_POST['tocflag']);
+		$tocflag=validate_input($_POST['tocflag']);
     $fname=validate_input($_POST['fname']);
     $lname=validate_input($_POST['lname']);
     $title=validate_input($_POST['title']);

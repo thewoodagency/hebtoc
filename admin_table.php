@@ -3,10 +3,11 @@ require ('../../lib/config.inc.php');
 require ('../../lib/mysqli_connect.php');
 require ('../../lib/functions.php');
 session_start();
+require_once('../../lib/session.php');
 
-if(isset($_SESSION['admin']) && $_SESSION['admin'] == 'kashwin50@hotmail.com')
+if(isset($_SESSION['admin']) && $_SESSION['admin'] == TOCEMAIL)
 {
-	$email = $_SESSION['email'];
+	$email = validate_input2($_SESSION['email']);
 	$regDate = '';
 	setlocale(LC_MONETARY, 'en_US');
 	$qString = 'SELECT toclevel, tlAmount, company, htable, hchoice1, hchoice2 FROM toc_table inner join toc_register on regID=idtoc_register

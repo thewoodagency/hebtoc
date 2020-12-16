@@ -3,10 +3,11 @@ require ('../../lib/config.inc.php');
 require ('../../lib/mysqli_connect.php');
 require ('../../lib/functions.php');
 session_start();
+require_once('../../lib/session.php');
 $gfirstdate = THIRD;
 $gseconddate = FIFTH;
 
-if(isset($_SESSION['admin']) && $_SESSION['admin'] == 'kashwin50@hotmail.com')
+if(isset($_SESSION['admin']) && $_SESSION['admin'] == TOCEMAIL)
 {
 	$email = $_SESSION['email'];
 	$regDate = '';
@@ -146,7 +147,7 @@ $(document).ready(function()
 <div id="content">
 <p><a href="admin_officer_excel.php">Excel</a></p>
 <table id="myTable" class="tablesorter"> 
-<thead><tr><th>Name</th><th>Title</th><th>Email</th><th>Password</th><th>Office #</th><th>Cell #</th><th width="100px">Golf</th><th>Welcome Dinner</th><th>Charity Work</th><th>Reception</th><th>&nbsp;</th></tr></thead>
+<thead><tr><th>Name</th><th>Title</th><th>Email</th><th>Office #</th><th>Cell #</th><th width="100px">Golf</th><th>Welcome Dinner</th><th>Charity Work</th><th>Reception</th><th>&nbsp;</th></tr></thead>
 <? echo $tbrows; ?>
 </table>
 </div>

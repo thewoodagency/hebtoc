@@ -4,21 +4,23 @@ error_reporting(~0);
 
 require ('../../lib/config.php');
 require('../../lib/functions.php');
-
 session_start();
+require_once('../../lib/session.php');
 if (isset($_SESSION['admin']) && isset($_SESSION['token'])) {
-    $session = session_read(true, $_SESSION['admin']);
-
-    if (!hash_equals($_SESSION['token'], $session)) {
-        session_destroy();
-        header("Location: login_proc.php");
-    }
-
     $email = validate_input2($_GET['email']);
     $rid = validate_input($_GET['rid']);
-    $source = 'reg_info.php';
+    $source = validate_input($_GET['source']);
+
     $_SESSION['email'] = $email;
     $_SESSION['regid'] = $rid;
+
+    if ($source === "reg&lowbar;info") {
+        $source = "reg_info.php";
+    } else if ($source === "&lowbar;invoice") {
+        $source = "_invoice.php";
+    } else {
+        $source = "index.php";
+    }
     header('Location: ' . $source);
     die();
 } else {

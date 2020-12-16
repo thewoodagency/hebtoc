@@ -3,14 +3,15 @@ require ('../../lib/config.inc.php');
 require ('../../lib/mysqli_connect.php');
 require ('../../lib/functions.php');
 session_start();
+require_once('../../lib/session.php');
 
-if(isset($_SESSION['admin']) && $_SESSION['admin'] == 'kashwin50@hotmail.com')
+if(isset($_SESSION['admin']) && $_SESSION['admin'] == TOCEMAIL)
 {
 	$email = $_SESSION['email'];
 	if (isset($_GET['rid']) && $_GET['rid']<>"")
 	{
 		$qString = 'DELETE t1 FROM
-			toc_admin as t1 WHERE t1.idtoc_admin=' . $_GET['rid'];
+			toc_admin as t1 WHERE t1.idtoc_admin=' . validate_input($_GET['rid']);
 			//echo $qString;
 		$dbc->query($qString);
 		$dbc->close();

@@ -5,37 +5,33 @@ error_reporting(~0);
 
 
 //require ('../../lib/config.inc.php');
-require ('../../lib/mysqli_connect.php');
-require ('../../lib/functions.php');
+require('../../lib/config.php');
+require('../../lib/functions.php');
 
 session_start();
+require_once('../../lib/session.php');
 
-if(isset($_SESSION['admin']) && $_SESSION['admin'] == 'kashwin50@hotmail.com')
-{
-	$regEmail = $_SESSION['email'];
+if (isset($_SESSION['admin']) && $_SESSION['admin'] == TOCEMAIL) {
+	//$regEmail = $_SESSION['email'];
 	//$regID = $_SESSION['regid'];
-	$noofPeople = $_POST['numRows'];
-	$golf = $_POST['golf'];
+	$noofPeople = validate_input($_POST['numRows']);
+	$golf = validate_input($_POST['golf']);
 
-	for ($i=0; $i<$noofPeople; $i++)
-	{
+	for ($i = 0; $i < $noofPeople; $i++) {
 		//if (isset($_POST['first'.$i]) && $_POST['first'.$i]<>'')
 		//
-			$hid=$_POST['hid'.$i];
-            $loc=$_POST['gloc'.$i];
-			if (!is_null($loc))
-			{
-                $qString = sprintf('update toc_events set toc_golf_loc = "%s" where hid = "%s"',
-                    $dbc->real_escape_string($loc),
-                    $dbc->real_escape_string($hid));
-                $dbc->query($qString);
-                //echo $qString . '<br>';
-			}
+		$hid = validate_input($_POST['hid' . $i]);
+		$loc = validate_input($_POST['gloc' . $i]);
+		if (!is_null($loc)) {
+			$query = $connection->prepare('update toc_events set toc_golf_loc=:loc where hid=:hid');
+			$query->bindParam('loc', $loc, PDO::PARAM_STR);
+			$query->bindParam('hid', $hid, PDO::PARAM_STR);
+			$query->execute();
+		}
 	} //end for
-	$dbc->close();
 	//send_notice("hotel");
-    $redirect = 'admin_golf'.$golf.'_n.php';
-	header('Location: '.$redirect);
+	$redirect = 'admin_golf' . $golf . '_n.php';
+	header('Location: ' . $redirect);
 	exit();
 } else {
 	header("Location: login_proc.php");

@@ -1,6 +1,7 @@
 <?php
-require ('../../lib/config.inc.php');
-require ('../../lib/mysqli_connect.php');
+ini_set('display_errors', 1);
+error_reporting(~0);
+require ('../../lib/config.php');
 require ('../../lib/functions.php');
 session_start();
 
@@ -8,17 +9,20 @@ session_start();
 //$_SESSION['email'] = $_GET["remail"];
 //
 
-if(isset($_SESSION['email']))
+if(isset($_SESSION['email']) && isset($_SESSION['token']))
 {
-    $email = validate_input2($_SESSION['email']);
+    //$email = validate_input2($_SESSION['email']);
+    //echo $email;
     $message = '';
     $readonly = '';
     $hidden = '';
     $source = false;
+    $emailAddress = '';
+
     if (isset($_SESSION['admin'])) //if session has admin emails
     {
-        if ($_GET["remail"]) {
-            $email = validate_input2($_GET["remail"]);
+        if (isset($_GET["remail"])) {
+            $email = validate_input($_GET["remail"]); //$email contains idtoc_admin (ID)
             if (isset($_GET["data"])) {
                 $message = '<p>Updated! Please close this window if you are done.</p>';
             }
@@ -27,18 +31,27 @@ if(isset($_SESSION['email']))
                 $readonly = "readonly";
                 $hidden = '<input type="hidden" name="source" value="department" />';
             }
-        } else if ($_GET["new"]) {
+        } else if (isset($_GET["new"]) && $_GET["new"]) {
             $email = '';
             $hidden = '<input type="hidden" name="new_reg" value="true" />';
+        }
+    } else {
+        if (isset($_GET["remail"])) {
+            $email = validate_input($_GET["remail"]);
         }
     }
 
     setlocale(LC_MONETARY, 'en_US');
-    $qString = sprintf('select * from toc_admin where adminid="%s"', $dbc->real_escape_string($email));
-    $r = $dbc->query($qString);
-    if ($row = $r->fetch_assoc())
+
+    $query = $connection->prepare('select * from toc_admin where idtoc_admin=:email');
+    $query->bindParam('email', $email, PDO::PARAM_STR);
+    $query->execute();
+    $row = $query->fetch(PDO::FETCH_ASSOC);
+
+    if ($row)
     {
         $adminid = $row["idtoc_admin"];
+        $emailAddress = $row["adminid"];
         $password = $row["adminpwd"];
         $department = $row["department"];
         $lastlogin = $row["lastlogin"];
@@ -136,6 +149,7 @@ if(isset($_SESSION['email']))
         <input type="hidden" name="lastlogin" value="<?php echo $lastlogin ?>" />
         <?php echo $hidden ?>
         <div class="form-all">
+        <h2 style="text-align:center">Update Admin User Info</h2>
             <?php echo $message ?>
             <ul class="form-section">
                 <li class="form-line" id="id_10">
@@ -143,7 +157,7 @@ if(isset($_SESSION['email']))
                         E-mail<span class="form-required">*</span>
                     </label>
                     <div id="cid_10" class="form-input">
-                        <input type="email" class=" form-textbox validate[required, Email]" id="username" name="username"  size="20" value="<?php echo $email ?>" />
+                        <input type="email" class=" form-textbox validate[required, Email]" id="username" name="username"  size="50" value="<?php echo $emailAddress ?>" />
                        <!-- <br>
                         <input type="email" class="form-textbox validate[required, Email, Email_Confirm]" id="input_10_confirm" style="margin-top:8px;" size="30" />
                         -->
@@ -215,7 +229,3 @@ if(isset($_SESSION['email']))
 
 </body>
 </html>
-<?
-$r->close();
-$dbc->close();
-?>
