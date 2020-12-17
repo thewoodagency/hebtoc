@@ -192,8 +192,8 @@ $(window).load(function() {
 
 </div>
 <div id="content"><div id="date">
-  <p><span class="d1">Our 2020 event will be held</span><br />
-<span class="d2">Wednesday - Friday, June 3-5</span></p></div>
+  <p><span class="d1">Our 2021 event will be held</span><br />
+<span class="d2">Wednesday - Friday, June 9-11</span></p></div>
 <div id="goal"><img src="images/total2020.jpg"/></div>
 </div>
 <div id="contact"><!-- InstanceBeginEditable name="additional info" -->

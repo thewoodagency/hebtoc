@@ -2,15 +2,15 @@
 ini_set('display_errors', 1);
 error_reporting(~0);
 require ('../../lib/config.inc.php');
-require ('../../lib/mysqli_connect.php');
+require ('../../lib/config.php');
 require ('../../lib/functions.php');
 session_start();
 $entries = array();
 
-if(isset($_SESSION['email']))
+if(isset($_SESSION['email']) && isset($_SESSION['token']))
 {
-    $email = $_SESSION['email'];
-    $regid = $_SESSION['regid'];
+    $email = validate_input2($_SESSION['email']);
+    $regid = validate_input($_SESSION['regid']);
     $tocinfo = getLevelInfo($_SESSION['toclevel']);
     $alertImage = '<img src="/images/exlamation.png" width="20px">';
     $errorMessage = getErrorMessage($tocinfo);
@@ -21,13 +21,14 @@ if(isset($_SESSION['email']))
     $domain = substr(strrchr($email, "@"), 1);
     $regDate = '';
     setlocale(LC_MONETARY, 'en_US');
-    //$qString = sprintf('select * from toc_register where email="%s"', $dbc->real_escape_string($email));
-    $qString = sprintf('SELECT * FROM toc_events inner join toc_register on toc_regEmail = email and toc_regid = idtoc_register where isbroker=0 and toc_regid = "%s" and toc_regEmail = "%s"',
-        $dbc->real_escape_string($regid), $dbc->real_escape_string($email));
 
-    $r = $dbc->query($qString);
+    $query = $connection->prepare('SELECT * FROM toc_events inner join toc_register on toc_regEmail = email and toc_regid = idtoc_register 
+                                    where isbroker=0 and toc_regid=:regid and toc_regEmail=:email');
+    $query->bindParam('regid', $regid, PDO::PARAM_STR);
+    $query->bindParam('email', $email, PDO::PARAM_STR);
+    $query->execute();
 
-    while ($row = $r->fetch_assoc())
+    while ($row = $query->fetch(PDO::FETCH_ASSOC)) //$r->fetch_assoc())
     {
         $_SESSION['toclevel'] = $row["toclevel"];
         $_SESSION['regdate'] = $row["registerd_date"];
@@ -833,7 +834,3 @@ to complete the electronic form.</p>
 </div>
 </body>
 <!-- InstanceEnd --></html>
-<?
-$r->close();
-$dbc->close();
-?>

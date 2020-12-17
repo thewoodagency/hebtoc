@@ -23,13 +23,6 @@ if (isset($_SESSION['admin']) && $_SESSION['admin'] == TOCEMAIL) {
 		$hid = validate_input($_POST['hid' . $i]);
 		$loc = validate_input($_POST['cloc' . $i]);
 		if ($loc != '' && !is_null($loc)) {
-			// $qString = sprintf(
-			// 	'update toc_events set toc_charity_loc = "%s" where hid = "%s"',
-			// 	$dbc->real_escape_string($loc),
-			// 	$dbc->real_escape_string($hid)
-			// );
-			// $dbc->query($qString);
-
 			$query = $connection->prepare('update toc_events set toc_charity_loc=:loc where hid =:hid');
 			$query->bindParam('loc', $loc, PDO::PARAM_STR);
 			$query->bindParam('hid', $hid, PDO::PARAM_STR);

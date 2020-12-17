@@ -2,13 +2,12 @@
 ini_set('display_errors', 1);
 error_reporting(~0);
 
-require ('../../lib/config.inc.php');
-require ('../../lib/mysqli_connect.php');
+require ('../../lib/config.php');
 require ('../../lib/functions.php');
 
 session_start();
 
-if(isset($_SESSION['email']) && isset($_POST['formID']))
+if(isset($_SESSION['email']) && isset($_POST['formID']) && isset($_SESSION['token']))
 {
     $regEmail = validate_input2($_SESSION['email']);
     $regID = validate_input($_SESSION['regid']);
@@ -25,18 +24,17 @@ if(isset($_SESSION['email']) && isset($_POST['formID']))
         $second=validate_input($_POST['second'.$i]);
         $hid=validate_input($_POST['hid'.$i]);
 
-        $qString = sprintf('replace into toc_table (hid, regID, regEmail, htable, hchoice1, hchoice2) values ("%s", "%s", "%s", "%s", "%s", "%s")',
-            $dbc->real_escape_string($hid),
-            $dbc->real_escape_string($regID),
-            $dbc->real_escape_string($regEmail),
-            $dbc->real_escape_string($table),
-            $dbc->real_escape_string($first),
-            $dbc->real_escape_string($second));
-
-        $dbc->query($qString);
+        $query = $connection->prepare('replace into toc_table (hid, regID, regEmail, htable, hchoice1, hchoice2) values (:hid, :regID, :regEmail, :tablename, :firstchoice, :secondchoice)');
+        $query->bindParam('hid', $hid, PDO::PARAM_STR);
+        $query->bindParam('regID', $regID, PDO::PARAM_STR);
+        $query->bindParam('regEmail', $regEmail, PDO::PARAM_STR);
+        $query->bindParam('tablename', $table, PDO::PARAM_STR);
+        $query->bindParam('firstchoice', $first, PDO::PARAM_STR);
+        $query->bindParam('secondchoice', $second, PDO::PARAM_STR);
+        //$query->debugDumpParams();
+        $query->execute();
         //}
     } //end for
-    $dbc->close();
     header("Location: reg_table.php");
 
 } else {
